@@ -4,7 +4,7 @@ Simple tool to detect reserved words/keywords used as object properties in a jav
 
 # To install
 
-```npm install detect-reserved-keywords -g"
+```npm install detect-reserved-keywords -g```
 
 # To use the cli
 type in your console
