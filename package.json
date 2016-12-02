@@ -1,0 +1,17 @@
+{
+  "name": "detect-reserved-keywords",
+  "version": "1.0.0",
+  "description": "detect reserve keywords use as property names in javascript files",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shahrul Nizam Selamat",
+  "license": "MIT",
+  "bin": {
+    "dresv": "./index.js"
+  },
+  "dependencies": {
+    "reserved-words": "^0.1.1"
+  }
+}
