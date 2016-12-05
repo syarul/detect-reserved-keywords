@@ -1,7 +1,7 @@
 {
   "name": "detect-reserved-keywords",
-  "version": "1.0.1",
-  "description": "detect reserve keywords use as property names in javascript files",
+  "version": "1.0.2",
+  "description": "detect reserve words use as property names in javascript files",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
