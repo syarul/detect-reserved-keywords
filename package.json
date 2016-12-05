@@ -1,6 +1,6 @@
 {
   "name": "detect-reserved-keywords",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "detect reserve keywords use as property names in javascript files",
   "main": "index.js",
   "scripts": {
@@ -13,5 +13,18 @@
   },
   "dependencies": {
     "reserved-words": "^0.1.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/syarul/detect-reserved-keywords.git"
+  },
+  "keywords": [
+    "reserve",
+    "detect",
+    "reserved words"
+  ],
+  "bugs": {
+    "url": "https://github.com/syarul/detect-reserved-keywords/issues"
+  },
+  "homepage": "https://github.com/syarul/detect-reserved-keywords#readme"
 }

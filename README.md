@@ -1,5 +1,5 @@
 # detect-reserved-keywords
-Simple tool to detect reserved words/keywords used as object properties in a javascript file
+Simple tool to detect reserved words used as object properties in a javascript file
 
 
 # To install
