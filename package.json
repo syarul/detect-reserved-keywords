@@ -1,6 +1,6 @@
 {
   "name": "detect-reserved-keywords",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "detect reserve words use as property names in javascript files",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,7 @@
     "dresv": "./index.js"
   },
   "dependencies": {
+    "commander": "^2.9.0",
     "reserved-words": "^0.1.1"
   },
   "repository": {
