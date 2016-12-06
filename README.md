@@ -14,7 +14,7 @@ type ```dresv -h```
     -V, --version          output the version number
     -e, --es <version>     Ecmascript dialects version either: 3, 5 or 6
     -f, --file <file.js>   javascript file reference, ie: -f jsFileWithReserveWords.js
-    -d, --dir <directory>  parse all *.js files in a directory
+    -d, --dir <directory>  parse all *.js files in a directory recursively
 
 # To use the cli
 type in your console

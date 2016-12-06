@@ -3,6 +3,7 @@
 var program = require('commander')
 ,   fs = require('fs')
 ,   readline = require('readline')
+,   rread = require('readdir-recursive')
 ,   resv = require('reserved-words')
 ,   ver = require('./package.json').version
 
@@ -12,7 +13,7 @@ program
   .version(ver)
   .option('-e, --es <version>', 'Ecmascript dialects version either: 3, 5 or 6', parseInt)
   .option('-f, --file <file.js>', 'javascript file reference, ie: -f jsFileWithReserveWords.js')
-  .option('-d, --dir <directory>', 'parse all *.js files in a directory')
+  .option('-d, --dir <directory>', 'parse all *.js files in a directory recursively')
   .parse(process.argv);
 
 if (!program.file) {
@@ -39,7 +40,7 @@ var dialect = program.e || program.es
 
 if (dir) {
   if (dir === '*') dir = './'
-  rawfiles = fs.readdirSync(dir)
+  rawfiles = rread.fileSync(dir)
 }
 
 var files = rawfiles.filter(function(f) {
@@ -52,7 +53,7 @@ if (dir) {
     function next(index) {
       if (index < files.length - 1) {
         index++
-        ReadLine(dir+'/'+files[index], true, function() {
+        ReadLine(files[index], true, function() {
           next(index)
         })
       }
@@ -64,6 +65,7 @@ if (dir) {
 } else {
   ReadLine(file)
 }
+
 
 function ReadLine(file, async, cb) {
 
@@ -90,14 +92,14 @@ function ReadLine(file, async, cb) {
           var isReserved = resv.check(o, dialect)
           if (isReserved) {
             isFound = true
-            log(o + ' is a reserved words (' + file + ':line ' + c + ')')
+            log(o + ' is a reserved word (' + file + ':line ' + c + ')')
           }
         } else if (i === r.length - 1) {
           var last = o.substr(0, o.indexOf(' '))
           var isReservedLast = resv.check(last, dialect)
           if (isReservedLast) {
             isFound = true
-            log(last + ' is a reserved words (' + file + ':line ' + c + ')')
+            log(last + ' is a reserved word (' + file + ':line ' + c + ')')
           }
         }
       })
@@ -106,12 +108,12 @@ function ReadLine(file, async, cb) {
 
   if (async) {
     rd.on('close', function() {
-      if (!isFound) log(file + ' has no reserved words [es' + dialect + ']')
+      if (!isFound) log(file + ' has no reserved word [es' + dialect + ']')
       cb()
     })
   } else {
     rd.on('close', function() {
-      if (!isFound) log(file + ' has no reserved words [es' + dialect + ']')
+      if (!isFound) log(file + ' has no reserved word [es' + dialect + ']')
     })
   }
 }
