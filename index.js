@@ -48,10 +48,11 @@ var files = rawfiles.filter(function(f) {
 
 if (dir) {
   if (files.length !== 0) {
+
     function next(index) {
       if (index < files.length - 1) {
         index++
-        ReadLine(files[index], true, function() {
+        ReadLine(dir+'/'+files[index], true, function() {
           next(index)
         })
       }
@@ -74,6 +75,8 @@ function ReadLine(file, async, cb) {
 
   var c = 0
   ,   isFound = false
+
+  file = file.replace(/([^:]\/)\/+/g, "$1")
 
   log('\nparsing ' + file + '...')
 

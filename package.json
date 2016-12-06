@@ -1,6 +1,6 @@
 {
   "name": "detect-reserved-keywords",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "detect reserve words use as property names in javascript files",
   "main": "index.js",
   "scripts": {
