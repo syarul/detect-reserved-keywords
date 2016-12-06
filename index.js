@@ -14,19 +14,19 @@ program
   .option('-d, --dir <directory>', 'parse all *.js files in a directory')
   .parse(process.argv);
 
-if(!program.file) {
-  if(!program.dir){
-  	errorParse()
+if (!program.file) {
+  if (!program.dir) {
+    errorParse()
   }
-} else if(!program.dir){
-  if(!program.file){
-  	errorParse()
+} else if (!program.dir) {
+  if (!program.file) {
+    errorParse()
   }
-} else if(!program.es){
-	errorParse()
+} else if (!program.es) {
+  errorParse()
 }
 
-function errorParse(){
+function errorParse() {
   log('Parsing error, type "dresv -h" to see available arguments')
   return false
 }
@@ -39,31 +39,31 @@ var dir = program.d || program.dir
 
 var rawfiles = []
 
-if(dir) {
-	if(dir === '*') dir = './'
-	rawfiles = fs.readdirSync(dir)
+if (dir) {
+  if (dir === '*') dir = './'
+  rawfiles = fs.readdirSync(dir)
 }
 
-var files = rawfiles.filter(function(f){
-	return (/\.js$/.test(f))
+var files = rawfiles.filter(function(f) {
+  return (/\.js$/.test(f))
 })
 
-if(dir){
-	if(files.length !== 0){
-		function next(index) {
-		    if (index < files.length - 1) {
-		    	index++
-		      	ReadLine(files[index], true, function(){
-		      		next(index)
-		      	})
-		    }
-		}
-		next(-1)
-	} else {
-		log('Directory has no *.js files')
-	}
+if (dir) {
+  if (files.length !== 0) {
+    function next(index) {
+      if (index < files.length - 1) {
+        index++
+        ReadLine(files[index], true, function() {
+          next(index)
+        })
+      }
+    }
+    next(-1)
+  } else {
+    log('Directory has no *.js files')
+  }
 } else {
-	ReadLine(file)
+  ReadLine(file)
 }
 
 function ReadLine(file, async, cb) {
@@ -90,14 +90,14 @@ function ReadLine(file, async, cb) {
           var isReserved = resv.check(o, dialect)
           if (isReserved) {
             isFound = true
-            log(o+' is a reserved words ('+file+':line '+c+')')
+            log(o + ' is a reserved words (' + file + ':line ' + c + ')')
           }
         } else if (i === r.length - 1) {
           var last = o.substr(0, o.indexOf(' '))
           var isReservedLast = resv.check(last, dialect)
           if (isReservedLast) {
             isFound = true
-            log(last+' is a reserved words ('+file+':line '+c+')')
+            log(last + ' is a reserved words (' + file + ':line ' + c + ')')
           }
         }
       })
