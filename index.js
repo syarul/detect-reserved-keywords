@@ -11,15 +11,23 @@ program
   .version('1.1.0')
   .option('-e, --es <version>', 'Ecmascript dialects version either: 3, 5 or 6', parseInt)
   .option('-f, --file <file.js>', 'javascript file reference, ie: -f jsFileWithReserveWords.js')
+  .option('-d, --dir <directory>', 'parse all *.js files in a directory')
   .parse(process.argv);
 
-if (!program.es) {
-  log('No Ecmascript dialects is defined, ie: "  -e 3" for es3 reference')
-  return false
+if(!program.file) {
+  if(!program.dir){
+  	errorParse()
+  }
+} else if(!program.dir){
+  if(!program.file){
+  	errorParse()
+  }
+} else if(!program.es){
+	errorParse()
 }
 
-if (!program.file) {
-  log('You need to provide the file reference i.e: "  -f test.js"')
+function errorParse(){
+  log('Parsing error, type "dresv -h" to see available arguments')
   return false
 }
 
@@ -27,42 +35,83 @@ var dialect = program.e || program.es
 
 var file = program.f || program.file
 
-var rd = readline.createInterface({
-  input: fs.createReadStream(file),
-  output: process.stdout,
-  terminal: false
+var dir = program.d || program.dir
+
+var rawfiles = []
+
+if(dir) {
+	if(dir === '*') dir = './'
+	rawfiles = fs.readdirSync(dir)
+}
+
+var files = rawfiles.filter(function(f){
+	return (/\.js$/.test(f))
 })
 
-var c = 0
+if(dir){
+	if(files.length !== 0){
+		function next(index) {
+		    if (index < files.length - 1) {
+		    	index++
+		      	ReadLine(files[index], true, function(){
+		      		next(index)
+		      	})
+		    }
+		}
+		next(-1)
+	} else {
+		log('Directory has no *.js files')
+	}
+} else {
+	ReadLine(file)
+}
 
-var isFound = false
+function ReadLine(file, async, cb) {
 
-log('parsing ' + file + '...')
+  var rd = readline.createInterface({
+    input: fs.createReadStream(file),
+    output: process.stdout,
+    terminal: false
+  })
 
-rd.on('line', function(line) {
-  c++
-  var m = line.match(/\./g, ' ')
-  if (m) {
-    var objList = line.split('.')
-    objList.forEach(function(o, i, r) {
-      if (i !== 0 && i !== r.length - 1) {
-        var isReserved = resv.check(o, dialect)
-        if (isReserved) {
-          isFound = true
-          log(o + ' is a reserved words on line:' + c)
+  var c = 0
+
+  var isFound = false
+
+  log('\nparsing ' + file + '...')
+
+  rd.on('line', function(line) {
+    c++
+    var m = line.match(/\./g, ' ')
+    if (m) {
+      var objList = line.split('.')
+      objList.forEach(function(o, i, r) {
+        if (i !== 0 && i !== r.length - 1) {
+          var isReserved = resv.check(o, dialect)
+          if (isReserved) {
+            isFound = true
+            log(o+' is a reserved words ('+file+':line '+c+')')
+          }
+        } else if (i === r.length - 1) {
+          var last = o.substr(0, o.indexOf(' '))
+          var isReservedLast = resv.check(last, dialect)
+          if (isReservedLast) {
+            isFound = true
+            log(last+' is a reserved words ('+file+':line '+c+')')
+          }
         }
-      } else if (i === r.length - 1) {
-        var last = o.substr(0, o.indexOf(' '))
-        var isReservedLast = resv.check(last, dialect)
-        if (isReservedLast) {
-          isFound = true
-          log(last + ' is a reserved words on line:' + c)
-        }
-      }
+      })
+    }
+  })
+
+  if (async) {
+    rd.on('close', function() {
+      if (!isFound) log(file + ' has no reserved words [es' + dialect + ']')
+      cb()
+    })
+  } else {
+    rd.on('close', function() {
+      if (!isFound) log(file + ' has no reserved words [es' + dialect + ']')
     })
   }
-})
-
-rd.on('close', function() {
-  if (!isFound) log(file + ' has no reserved words [es' + dialect + ']')
-})
+}
