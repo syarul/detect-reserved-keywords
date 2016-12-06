@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 
 var program = require('commander')
-var fs = require('fs')
-var readline = require('readline')
-var resv = require('reserved-words')
+,   fs = require('fs')
+,   readline = require('readline')
+,   resv = require('reserved-words')
+,   ver = require('./package.json').version
 
-var log = console.log.bind(console)
+,   log = console.log.bind(console)
 
 program
-  .version('1.1.0')
+  .version(ver)
   .option('-e, --es <version>', 'Ecmascript dialects version either: 3, 5 or 6', parseInt)
   .option('-f, --file <file.js>', 'javascript file reference, ie: -f jsFileWithReserveWords.js')
   .option('-d, --dir <directory>', 'parse all *.js files in a directory')
@@ -32,12 +33,9 @@ function errorParse() {
 }
 
 var dialect = program.e || program.es
-
-var file = program.f || program.file
-
-var dir = program.d || program.dir
-
-var rawfiles = []
+,   file = program.f || program.file
+,   dir = program.d || program.dir
+,   rawfiles = []
 
 if (dir) {
   if (dir === '*') dir = './'
@@ -75,8 +73,7 @@ function ReadLine(file, async, cb) {
   })
 
   var c = 0
-
-  var isFound = false
+  ,   isFound = false
 
   log('\nparsing ' + file + '...')
 
