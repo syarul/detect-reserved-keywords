@@ -40,16 +40,11 @@ var dialect = program.e || program.es
 
 if (dir) {
   if (dir === '*') dir = './'
-  rawfiles = rread.fileSync(dir)
-}
-
-var files = rawfiles.filter(function(f) {
-  return (/\.js$/.test(f))
-})
-
-if (dir) {
+  var files = rread.fileSync(dir)
+    .filter(function(f) {
+      return (/\.js$/.test(f))
+    })
   if (files.length !== 0) {
-
     function next(index) {
       if (index < files.length - 1) {
         index++
@@ -65,7 +60,6 @@ if (dir) {
 } else {
   ReadLine(file)
 }
-
 
 function ReadLine(file, async, cb) {
 
